@@ -40,6 +40,20 @@ class ValidationFailure extends Failure {
   }) : super(message: message, code: code);
 }
 
+class ServerFailure extends Failure {
+  ServerFailure({
+    required String message,
+    String? code,
+  }) : super(message: message, code: code);
+}
+
+class CacheFailure extends Failure {
+  CacheFailure({
+    required String message,
+    String? code,
+  }) : super(message: message, code: code);
+}
+
 class UnknownFailure extends Failure {
   UnknownFailure()
       : super(message: 'An unknown error occurred');

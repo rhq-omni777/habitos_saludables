@@ -46,9 +46,6 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
       ref.read(authStateProvider.notifier).resetPassword(
             email: _emailController.text,
           );
-      setState(() {
-        _emailSent = true;
-      });
     }
   }
 
@@ -57,16 +54,26 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
     final authState = ref.watch(authStateProvider);
     final isLoading = ref.watch(isLoadingProvider);
 
-    ref.listen(authStateProvider, (previous, next) {
-      if (next is AuthError) {
+    // Mostrar mensaje de éxito cuando el estado es AuthUnauthenticated (después de reset)
+    if (authState is AuthUnauthenticated && !_emailSent && _emailController.text.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          _emailSent = true;
+        });
+      });
+    }
+
+    // Mostrar error si hay
+    if (authState is AuthError) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(next.message),
+            content: Text(authState.message),
             backgroundColor: Colors.red,
           ),
         );
-      }
-    });
+      });
+    }
 
     return Scaffold(
       appBar: AppBar(

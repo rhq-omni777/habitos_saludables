@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1048638276516",
+    "project_id": "habitos-saludaables",
+    "storage_bucket": "habitos-saludaables.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1048638276516:android:226f962f1e92b66e6c7731",
+        "android_client_info": {
+          "package_name": "com.rhq_omni777.habitos_saludables"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7-wcKX6cxlUK5UR1umzzeZHlzwM71XY0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

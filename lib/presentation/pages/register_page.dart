@@ -121,6 +121,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                   child: Column(
                     children: [
                       AuthTextField(
+                        key: const Key('register_name_field'),
                         label: 'Nombre completo',
                         hint: 'Juan Pérez',
                         controller: _nameController,
@@ -135,6 +136,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                       ),
                       const SizedBox(height: 16),
                       AuthTextField(
+                        key: const Key('register_email_field'),
                         label: 'Correo electrónico',
                         hint: 'ejemplo@correo.com',
                         controller: _emailController,
@@ -149,6 +151,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                       ),
                       const SizedBox(height: 16),
                       AuthTextField(
+                        key: const Key('register_password_field'),
                         label: 'Contraseña',
                         hint: 'Mínimo 8 caracteres',
                         controller: _passwordController,
@@ -163,6 +166,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                       ),
                       const SizedBox(height: 16),
                       AuthTextField(
+                        key: const Key('register_confirm_field'),
                         label: 'Confirmar contraseña',
                         hint: 'Repite tu contraseña',
                         controller: _confirmPasswordController,

@@ -11,37 +11,30 @@ class SplashPage extends ConsumerStatefulWidget {
 }
 
 class _SplashPageState extends ConsumerState<SplashPage> {
-  bool _navigated = false;
-
   @override
   void initState() {
     super.initState();
-    // Inicializar autenticación (caché, etc.)
-    Future.microtask(() {
+    // Inicializar autenticación
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(authStateProvider.notifier).initializeAuth();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(authStateProvider);
-
     ref.listen<AuthState>(authStateProvider, (prev, next) {
-      if (_navigated) return;
       if (next is AuthAuthenticated) {
-        _navigated = true;
         Navigator.of(context).pushReplacementNamed('/home');
       } else if (next is AuthUnauthenticated || next is AuthLoggedOut) {
-        _navigated = true;
         Navigator.of(context).pushReplacementNamed('/login');
       }
     });
 
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children: [
             CircularProgressIndicator(),
             SizedBox(height: 16),
             Text('Cargando...'),

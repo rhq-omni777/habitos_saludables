@@ -38,20 +38,28 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
     required String name,
   }) async {
     state = const AuthLoading();
+    try {
+      final result = await _registerUsecase(
+        email: email,
+        password: password,
+        name: name,
+      );
 
-    final result = await _registerUsecase(
-      email: email,
-      password: password,
-      name: name,
-    );
-
-    result.fold(
-      (failure) => state = AuthError(
-        message: failure.message,
-        code: failure.code,
-      ),
-      (user) => state = AuthAuthenticated(user: user),
-    );
+      result.fold(
+        (failure) {
+          state = AuthError(
+            message: failure.message,
+            code: failure.code,
+          );
+        },
+        (user) {
+          state = AuthAuthenticated(user: user);
+        },
+      );
+    } catch (e) {
+      // Fallback para no dejar el estado en loading si ocurre un error inesperado
+      state = AuthError(message: 'Error inesperado al registrar: $e');
+    }
   }
 
   /// Inicia sesión del usuario

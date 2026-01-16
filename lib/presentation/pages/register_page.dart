@@ -49,6 +49,8 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
         password: _passwordController.text,
         confirmPassword: _confirmPasswordController.text,
       );
+      // Elimina entradas sin error para que isEmpty funcione correctamente
+      _validationErrors.removeWhere((_, value) => value == null);
     });
   }
 
@@ -69,21 +71,24 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     final authState = ref.watch(authStateProvider);
     final isLoading = ref.watch(isLoadingProvider);
 
-    ref.listen(authStateProvider, (previous, next) {
-      if (next is AuthError) {
+    // Navegar si está autenticado
+    if (authState is AuthAuthenticated) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.of(context).pushReplacementNamed('/home');
+      });
+    }
+
+    // Mostrar error si hay
+    if (authState is AuthError) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(next.message),
+            content: Text(authState.message),
             backgroundColor: Colors.red,
           ),
         );
-      }
-
-      // Navegar si está autenticado
-      if (next is AuthAuthenticated) {
-        Navigator.of(context).pushReplacementNamed('/home');
-      }
-    });
+      });
+    }
 
     String errorMessage = '';
     if (authState is AuthError) {
@@ -153,7 +158,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                       AuthTextField(
                         key: const Key('register_password_field'),
                         label: 'Contraseña',
-                        hint: 'Mínimo 8 caracteres',
+                        hint: 'Mínimo 6 caracteres',
                         controller: _passwordController,
                         obscureText: true,
                         prefixIcon: const Icon(Icons.lock_outlined),

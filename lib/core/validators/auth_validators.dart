@@ -23,24 +23,8 @@ abstract class AuthValidators {
       return 'La contraseña es requerida';
     }
 
-    if (password.length < 8) {
-      return 'La contraseña debe tener al menos 8 caracteres';
-    }
-
-    if (!password.contains(RegExp(r'[A-Z]'))) {
-      return 'La contraseña debe contener al menos una mayúscula';
-    }
-
-    if (!password.contains(RegExp(r'[a-z]'))) {
-      return 'La contraseña debe contener al menos una minúscula';
-    }
-
-    if (!password.contains(RegExp(r'[0-9]'))) {
-      return 'La contraseña debe contener al menos un número';
-    }
-
-    if (!password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
-      return 'La contraseña debe contener al menos un carácter especial';
+    if (password.length < 6) {
+      return 'La contraseña debe tener al menos 6 caracteres';
     }
 
     return null;

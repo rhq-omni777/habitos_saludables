@@ -41,6 +41,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         email: _emailController.text,
         password: _passwordController.text,
       );
+      // Elimina entradas sin error para que isEmpty funcione correctamente
+      _validationErrors.removeWhere((_, value) => value == null);
     });
   }
 
@@ -60,21 +62,24 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     final authState = ref.watch(authStateProvider);
     final isLoading = ref.watch(isLoadingProvider);
 
-    ref.listen(authStateProvider, (previous, next) {
-      if (next is AuthError) {
+    // Navegar si está autenticado
+    if (authState is AuthAuthenticated) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.of(context).pushReplacementNamed('/home');
+      });
+    }
+
+    // Mostrar error si hay
+    if (authState is AuthError) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(next.message),
+            content: Text(authState.message),
             backgroundColor: Colors.red,
           ),
         );
-      }
-
-      // Navegar si está autenticado
-      if (next is AuthAuthenticated) {
-        Navigator.of(context).pushReplacementNamed('/home');
-      }
-    });
+      });
+    }
 
     String errorMessage = '';
     if (authState is AuthError) {
